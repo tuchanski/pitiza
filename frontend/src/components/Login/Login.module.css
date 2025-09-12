@@ -93,7 +93,21 @@ button:hover {
 }
 
 .no-account {
-  max-width: fit-content;
+  display: flex;
+  justify-content: space-between;
+}
+
+.forgot-password a {
+  color: #a63a50;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s ease;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.forgot-password a:hover {
+  color: #922d3c;
 }
 
 .no-account a {
@@ -101,7 +115,7 @@ button:hover {
   text-decoration: none;
   font-weight: bold;
   transition: 0.3s ease;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
 }
 

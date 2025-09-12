@@ -19,13 +19,18 @@ function Login() {
             </label>
             <input type="password" id="password" name="password" required />
           </div>
-          <div className={styles["no-account"]}>
+          <div className={styles["forgot-password"]}>
             <a href="#">
-              <p>I don't have an account</p>
+              <p>Forgot password?</p>
             </a>
           </div>
           <button type="submit">Sign In</button>
         </form>
+        <div className={styles["no-account"]}>
+          <a href="#">
+            <p>I don't have an account</p>
+          </a>
+        </div>
       </div>
       <img src={showingPizza} alt="" className={styles.showingPizza} />
     </div>
@@ -33,4 +38,3 @@ function Login() {
 }
 
 export default Login;
-       
