@@ -19,6 +19,11 @@ function Login() {
             </label>
             <input type="password" id="password" name="password" required />
           </div>
+          <div className={styles["no-account"]}>
+            <a href="#">
+              <p>I don't have an account</p>
+            </a>
+          </div>
           <button type="submit">Sign In</button>
         </form>
       </div>
