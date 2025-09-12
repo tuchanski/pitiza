@@ -92,6 +92,10 @@ button:hover {
   transform: scale(1.1);
 }
 
+.no-account {
+  max-width: fit-content;
+}
+
 .no-account a {
   color: #a63a50;
   text-decoration: none;
