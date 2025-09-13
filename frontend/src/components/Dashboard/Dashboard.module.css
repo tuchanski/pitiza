@@ -1,5 +1,74 @@
 .dashboard {
-  background-color: #ecf9ff;
+  background: linear-gradient(
+    135deg,
+    #a63a50 0%,
+    #b44c61 30%,
+    #c87a8a 60%,
+    #eeeeee 100%
+  );
   min-height: 100vh;
   padding-top: 100px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-options {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container-options p {
+  font-size: 22px;
+  color: #333;
+  margin-left: 40px;
+}
+
+.btn-create {
+  all: unset;
+  background-color: #4caf50;
+  color: white;
+  padding: 20px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 20px;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-create:hover {
+  background-color: #45a049;
+}
+
+.btn-search {
+  all: unset;
+  padding: 20px 30px;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-search:hover {
+  background-color: #007bb5;
+}
+
+.container-options-buttons {
+  margin-right: 40px;
 }
