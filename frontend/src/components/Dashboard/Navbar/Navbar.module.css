@@ -1,0 +1,43 @@
+.navbar {
+  background: #ffffff;
+  width: 100%;
+  float: left;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.navbar h2 {
+  margin: 0;
+  margin-left: 40px;
+  font-weight: 700;
+  font-size: 25px;
+  color: #922d3c;
+}
+
+.navbar button {
+  all: unset;
+  color: #922d3c;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-right: 40px;
+}
+
+.navbar button:hover {
+  color: #591720;
+}
+
+.navbar img {
+  height: 100px;
+  margin: 0;
+  margin-left: 35px;
+}
