@@ -8,7 +8,6 @@ function Register() {
     <div className={styles["container"]}>
       <img src={showingPizza} alt="" className={styles.showingPizza} />
       <div className={styles["login-container"]}>
-        <img src={pitizaLogo} alt="Pitiza" id={styles["pitiza-logo"]} />
         <h2>
           Hey! Join the <span>Pitiza's</span> crew.
         </h2>
