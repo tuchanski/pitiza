@@ -2,8 +2,13 @@ import React from "react";
 import styles from "./Register.module.css";
 import pitizaLogo from "../../assets/pitiza.svg";
 import showingPizza from "../../assets/showing-pizza2.png";
+import { Link } from "react-router-dom";
 
 function Register() {
+  function termsAndConditions() {
+    alert("Terms and Conditions: ...");
+  }
+
   return (
     <div className={styles["container"]}>
       <img src={showingPizza} alt="" className={styles.showingPizza} />
@@ -46,16 +51,16 @@ function Register() {
             />
           </div>
           <div className={styles["terms-conditions"]}>
-            <a href="#">
+            <a href="#" onClick={termsAndConditions}>
               <p>Terms and Conditions</p>
             </a>
           </div>
           <button type="submit">Sign Up</button>
         </form>
         <div className={styles["have-account"]}>
-          <a href="#">
+          <Link to={"/login"}>
             <p>I already have an account</p>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
