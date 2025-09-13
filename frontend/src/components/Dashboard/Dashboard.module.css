@@ -4,15 +4,19 @@
     #a63a50 0%,
     #b44c61 30%,
     #c87a8a 60%,
-    #eeeeee 100%
+    #db8697 100%
   );
   min-height: 100vh;
-  padding-top: 100px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
+  flex: 1;
+  padding-top: 100px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -28,10 +32,48 @@
   align-items: center;
 }
 
-.container-options p {
-  font-size: 22px;
-  color: #333;
-  margin-left: 40px;
+.container-options-buttons {
+  margin-right: 40px;
+}
+
+.container-cards {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+.container-cards .card {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.container-orders {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 1200px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+ul {
+  margin: 20px;
+  padding-left: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+li:last-child {
+  border-bottom: none;
 }
 
 .btn-create {
@@ -47,7 +89,6 @@
   transition: 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .btn-create:hover {
   background-color: #45a049;
 }
@@ -64,11 +105,60 @@
   transition: 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .btn-search:hover {
   background-color: #007bb5;
 }
 
-.container-options-buttons {
-  margin-right: 40px;
+.btn-delete {
+  all: unset;
+  background-color: #c87a8a;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: 0.3s ease;
+}
+.btn-delete:hover {
+  background-color: #a63a50;
+}
+
+.btn-update {
+  all: unset;
+  background-color: #b44c61;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: 0.3s ease;
+}
+.btn-update:hover {
+  background-color: #a63a50;
+}
+
+.container-options p {
+  font-size: 22px;
+  color: #333;
+  margin-left: 40px;
+}
+
+.container-orders h2 {
+  text-align: center;
+  color: #333;
+  font-size: 25px;
+}
+
+.container-orders p {
+  text-align: center;
+  color: #666;
+  font-size: 18px;
+}
+
+.orders-header {
+  border-bottom: 2px solid #ccc;
 }
