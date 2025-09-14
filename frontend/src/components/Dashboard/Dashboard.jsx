@@ -6,15 +6,27 @@ import Footer from "./Footer/Footer.jsx";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import OrderModal from "./OrderModal.jsx";
+import OrderTable from "./OrderTable.jsx";
+import DashboardHeader from "./DashboardHeader.jsx";
 
 function Dashboard() {
-  const [user, setUser] = useState("");
-  const [orders, setOrders] = useState([]);
-  const [auth, setAuth] = useState(false);
-  const [restaurant, setRestaurant] = useState("");
-
   const navigate = useNavigate();
 
+  const [user, setUser] = useState(""); // Current User
+  const [orders, setOrders] = useState([]); // All Orders
+  const [restaurant, setRestaurant] = useState(""); // Restaurant Name
+
+  const [order, setOrder] = useState({
+    customer_name: "",
+    items: "",
+    total_price: "",
+  }); // New Order
+
+  const [auth, setAuth] = useState(false); // Authentication Status
+  const [showModal, setShowModal] = useState(false); // Modal Visibility
+
+  // Fetch user and orders on component mount
   React.useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -43,6 +55,34 @@ function Dashboard() {
       });
   }, []);
 
+  async function handleCreateOrder(e) {
+    e.preventDefault();
+
+    const userId = await axios
+      .get("http://localhost:3000/me", { withCredentials: true })
+      .then((res) => res.data.id);
+
+    console.log("Trying to add order to: ", userId);
+
+    await axios
+      .post(`http://localhost:3000/users/${userId}/orders`, order, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setOrders([...orders, res.data]);
+      })
+      .then(() => {
+        alert("Order created successfully");
+      })
+      .catch((error) => {
+        console.error("Error creating order:", error);
+      });
+
+    setShowModal(false);
+    setOrder({ customer_name: "", items: "", total_price: "" });
+    navigate(0);
+  }
+
   function handleDelete(id_order) {
     axios
       .delete(`http://localhost:3000/orders/${id_order}`, {
@@ -61,15 +101,17 @@ function Dashboard() {
 
   return (
     <div className={styles.dashboard}>
+      <OrderModal
+        show={showModal}
+        onSubmit={handleCreateOrder}
+        order={order}
+        setOrder={setOrder}
+        onCancel={() => setShowModal(false)}
+      />
+
       <Navbar restaurantName={restaurant} />
       <div className={styles.container}>
-        <div className={styles["container-options"]}>
-          <p>Welcome back, {user.name} 😊</p>
-          <div className={styles["container-options-buttons"]}>
-            <button className={styles["btn-create"]}>Create Order</button>
-            <button className={styles["btn-search"]}>Search Order</button>
-          </div>
-        </div>
+        <DashboardHeader user={user} setShowModal={setShowModal} />
 
         <div className={styles["container-orders"]}>
           <div className={styles["orders-header"]}>
@@ -78,38 +120,7 @@ function Dashboard() {
           {orders.length === 0 ? (
             <p>No orders found. Create your first order!</p>
           ) : (
-            <table className={styles["orders-table"]}>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Customer</th>
-                  <th>Items</th>
-                  <th>Total Price</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order) => (
-                  <tr key={order.id_order}>
-                    <td>{order.id_order}</td>
-                    <td>{order.customer_name}</td>
-                    <td>{order.items}</td>
-                    <td>$ {order.total_price}</td>
-                    <td className={styles["actions-cell"]}>
-                      <button
-                        className={styles["btn-delete"]}
-                        onClick={() => handleDelete(order.id_order)}
-                      >
-                        <FaTrash size={22} />
-                      </button>
-                      <button className={styles["btn-update"]}>
-                        <FaEdit size={22} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <OrderTable orders={orders} handleDelete={handleDelete} />
           )}
         </div>
       </div>
