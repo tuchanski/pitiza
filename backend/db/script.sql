@@ -24,7 +24,9 @@ CREATE TABLE IF NOT EXISTS `pitiza`.`user` (
   `email` VARCHAR(256) NOT NULL,
   `password` VARCHAR(1024) NOT NULL,
   `restaurant` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
