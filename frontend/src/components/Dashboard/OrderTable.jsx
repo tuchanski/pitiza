@@ -1,9 +1,8 @@
 import React from "react";
 import styles from "./Dashboard.module.css";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import axios from "axios";
 
-function OrderTable({ orders, handleDelete }) {
+function OrderTable({ orders, handleDelete, handleEdit }) {
   return (
     <table className={styles["orders-table"]}>
       <thead>
@@ -29,7 +28,10 @@ function OrderTable({ orders, handleDelete }) {
               >
                 <FaTrash size={22} />
               </button>
-              <button className={styles["btn-update"]}>
+              <button
+                className={styles["btn-update"]}
+                onClick={() => handleEdit(order)}
+              >
                 <FaEdit size={22} />
               </button>
             </td>

@@ -72,11 +72,18 @@ async function getAllOrders(userId) {
   return result[0];
 }
 
-async function getOrderById(orderId) {
-  const result = await client.query(
-    "SELECT * FROM `order` WHERE id_order = ?",
-    [orderId]
-  );
+async function getOrderById(orderId, userId) {
+  let result;
+  if (typeof userId !== "undefined") {
+    result = await client.query(
+      "SELECT * FROM `order` WHERE id_order = ? AND user_user_id = ?",
+      [orderId, userId]
+    );
+  } else {
+    result = await client.query("SELECT * FROM `order` WHERE id_order = ?", [
+      orderId,
+    ]);
+  }
   return result[0][0] || null;
 }
 
@@ -89,15 +96,15 @@ async function createOrder(order, userId) {
   return result[0];
 }
 
-async function updateOrder(orderId, newData) {
-  const order = await getOrderById(orderId);
+async function updateOrder(orderId, userId, newData) {
+  // ensure order exists and belongs to the user
+  const order = await getOrderById(orderId, userId);
   if (!order) return null;
   const values = [
     newData.customer_name || order.customer_name,
     newData.items || order.items,
     newData.total_price || order.total_price,
     orderId,
-    userId,
   ];
   const result = await client.query(
     "UPDATE `order` SET customer_name = ?, items = ?, total_price = ? WHERE id_order = ?",

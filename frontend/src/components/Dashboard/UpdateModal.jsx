@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "./Dashboard.module.css";
 
-function OrderModal({ show, order, setOrder, onSubmit, onCancel }) {
+function UpdateModal({ show, order, setOrder, onSubmit, onCancel }) {
   if (!show) return null;
 
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <h2>Create New Order</h2>
+        <h2>Update Order</h2>
         <form onSubmit={onSubmit}>
           <div className={styles["form-group"]}>
             <label htmlFor="customer_name">Customer Name:</label>
@@ -45,7 +45,7 @@ function OrderModal({ show, order, setOrder, onSubmit, onCancel }) {
           </div>
           <div className={styles["form-actions"]}>
             <button type="submit" className={styles["btn-submit"]}>
-              Create
+              Update
             </button>
             <button
               type="button"
@@ -61,4 +61,4 @@ function OrderModal({ show, order, setOrder, onSubmit, onCancel }) {
   );
 }
 
-export default OrderModal;
+export default UpdateModal;

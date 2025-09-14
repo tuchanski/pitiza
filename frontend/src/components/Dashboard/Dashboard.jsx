@@ -6,9 +6,10 @@ import Footer from "./Footer/Footer.jsx";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import OrderModal from "./OrderModal.jsx";
+import CreateOrderModal from "./CreateOrderModal.jsx";
 import OrderTable from "./OrderTable.jsx";
 import DashboardHeader from "./DashboardHeader.jsx";
+import UpdateModal from "./UpdateModal.jsx";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ function Dashboard() {
 
   const [auth, setAuth] = useState(false); // Authentication Status
   const [showModal, setShowModal] = useState(false); // Modal Visibility
+  const [showUpdateModal, setShowUpdateModal] = useState(false); // Update Modal Visibility
+  const [editOrderId, setEditOrderId] = useState(null); // currently edited order id
 
   // Fetch user and orders on component mount
   React.useEffect(() => {
@@ -99,9 +102,45 @@ function Dashboard() {
       });
   }
 
+  function handleEdit(orderToEdit) {
+    setOrder(orderToEdit);
+    setEditOrderId(orderToEdit.id_order);
+    setShowUpdateModal(true);
+    console.log("handleEdit => editing", orderToEdit);
+  }
+
+  async function handleOrderUpdate(e) {
+    e.preventDefault();
+    console.log("handleOrderUpdate called", editOrderId, order);
+    try {
+      const userId = await axios
+        .get("http://localhost:3000/me", { withCredentials: true })
+        .then((res) => res.data.id);
+
+      const res = await axios.patch(
+        `http://localhost:3000/users/${userId}/orders/${editOrderId}`,
+        order,
+        { withCredentials: true }
+      );
+
+      const updated = res && res.data ? res.data : order;
+      setOrders((prev) =>
+        prev.map((o) => (o.id_order === editOrderId ? updated : o))
+      );
+      alert("Order updated successfully");
+    } catch (error) {
+      console.error("Error updating order:", error);
+    } finally {
+      setShowUpdateModal(false);
+      setOrder({ customer_name: "", items: "", total_price: "" });
+      setEditOrderId(null);
+      navigate(0);
+    }
+  }
+
   return (
     <div className={styles.dashboard}>
-      <OrderModal
+      <CreateOrderModal
         show={showModal}
         onSubmit={handleCreateOrder}
         order={order}
@@ -109,9 +148,24 @@ function Dashboard() {
         onCancel={() => setShowModal(false)}
       />
 
+      <UpdateModal
+        show={showUpdateModal}
+        onSubmit={handleOrderUpdate}
+        order={order}
+        setOrder={setOrder}
+        onCancel={() => setShowUpdateModal(false)}
+      />
+
       <Navbar restaurantName={restaurant} />
       <div className={styles.container}>
-        <DashboardHeader user={user} setShowModal={setShowModal} />
+        <DashboardHeader
+          user={user}
+          openCreateModal={() => {
+            setOrder({ customer_name: "", items: "", total_price: "" });
+            setEditOrderId(null);
+            setShowModal(true);
+          }}
+        />
 
         <div className={styles["container-orders"]}>
           <div className={styles["orders-header"]}>
@@ -120,7 +174,11 @@ function Dashboard() {
           {orders.length === 0 ? (
             <p>No orders found. Create your first order!</p>
           ) : (
-            <OrderTable orders={orders} handleDelete={handleDelete} />
+            <OrderTable
+              orders={orders}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+            />
           )}
         </div>
       </div>
