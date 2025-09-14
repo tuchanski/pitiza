@@ -116,6 +116,13 @@ async function deleteOrder(orderId, userId) {
   return true;
 }
 
+async function getUserByUsername(username) {
+  const result = await client.query("SELECT * FROM user WHERE username = ?", [
+    username,
+  ]);
+  return result[0][0] || null;
+}
+
 export default {
   getAllUsers,
   getUserById,
@@ -127,4 +134,5 @@ export default {
   createOrder,
   updateOrder,
   deleteOrder,
+  getUserByUsername,
 };
