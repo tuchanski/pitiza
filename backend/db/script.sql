@@ -18,15 +18,13 @@ USE `pitiza` ;
 -- Table `pitiza`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `pitiza`.`user` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_user` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(128) NOT NULL,
-  `name` VARCHAR(256) NOT NULL,
-  `email` VARCHAR(256) NOT NULL,
+  `name` VARCHAR(256) NULL,
   `password` VARCHAR(1024) NOT NULL,
-  `restaurant` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+  `restaurant_name` VARCHAR(128) NULL,
+  PRIMARY KEY (`id_user`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -34,16 +32,16 @@ ENGINE = InnoDB;
 -- Table `pitiza`.`order`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `pitiza`.`order` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_order` INT NOT NULL AUTO_INCREMENT,
   `customer_name` VARCHAR(256) NOT NULL,
-  `items` VARCHAR(256) NOT NULL,
+  `items` VARCHAR(1024) NOT NULL,
   `total_price` DOUBLE NOT NULL,
-  `user_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_order_user_idx` (`user_id` ASC) VISIBLE,
+  `user_user_id` INT NOT NULL,
+  PRIMARY KEY (`id_order`),
+  INDEX `fk_order_user_idx` (`user_user_id` ASC) VISIBLE,
   CONSTRAINT `fk_order_user`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `pitiza`.`user` (`id`)
+    FOREIGN KEY (`user_user_id`)
+    REFERENCES `pitiza`.`user` (`id_user`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

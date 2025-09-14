@@ -1,12 +1,15 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 import * as userController from "./controllers/userController.js";
 import * as orderController from "./controllers/orderController.js";
 
 const envFound = dotenv.config();
 const app = express();
-
 app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
 
 // User routes
 app.get("/users", userController.getAllUsers);
