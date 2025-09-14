@@ -12,6 +12,7 @@ function Login() {
   });
 
   const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,6 +21,10 @@ function Login() {
       .post("http://localhost:3000/login", values)
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data);
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("userId", res.data.userId);
+          localStorage.setItem("restaurantName", res.data.restaurantName);
           alert("Login successful!");
           navigate("/dashboard");
         } else {

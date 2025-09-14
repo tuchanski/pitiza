@@ -4,25 +4,48 @@ import styles from "./Dashboard.module.css";
 import Navbar from "./Navbar/Navbar.jsx";
 import Footer from "./Footer/Footer.jsx";
 import { FaTrash, FaEdit } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [user, setUser] = useState("");
   const [orders, setOrders] = useState([]);
+  const [auth, setAuth] = useState(false);
+  const [restaurant, setRestaurant] = useState("");
 
-  function fetchUserData() {
-    // Simulate fetching user data from an API
-    setUser({ name: "John Doe" });
-    setOrders(Array.from({ length: 50 }, (_, i) => `Order ${i + 1}`));
-  }
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    fetchUserData();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setAuth(false);
+      navigate("/login");
+      return;
+    }
+
+    axios
+      .get("http://localhost:3000/me", { withCredentials: true })
+      .then((res) => {
+        setAuth(true);
+        setUser(res.data);
+        console.log(res.data);
+        setRestaurant(res.data.restaurantName);
+        axios
+          .get(`http://localhost:3000/users/${res.data.id}/orders`, {
+            withCredentials: true,
+          })
+          .then((res) => setOrders(res.data))
+          .then(() => console.log(res.orders));
+      })
+      .catch(() => {
+        setAuth(false);
+        navigate("/login");
+      });
   }, []);
 
   return (
     <div className={styles.dashboard}>
-      <Navbar />
-
+      <Navbar restaurantName={restaurant} />
       <div className={styles.container}>
         <div className={styles["container-options"]}>
           <p>Welcome back, {user.name} 😊</p>
@@ -37,29 +60,40 @@ function Dashboard() {
             <h2>Your Orders</h2>
           </div>
           {orders.length === 0 ? (
-            <p>No orders found.</p>
+            <p>No orders found. Create your first order!</p>
           ) : (
-            <ul>
-              {orders.map((order, index) => (
-                <div className="order-item">
-                  <li key={index}>
-                    {order}{" "}
-                    <div className="btn-container">
+            <table className={styles["orders-table"]}>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order.id_order}>
+                    <td>{order.id_order}</td>
+                    <td>{order.customer_name}</td>
+                    <td>{order.items}</td>
+                    <td>$ {order.total_price}</td>
+                    <td>
                       <button className={styles["btn-delete"]}>
                         <FaTrash size={22} />
                       </button>
                       <button className={styles["btn-update"]}>
                         <FaEdit size={22} />
                       </button>
-                    </div>
-                  </li>
-                </div>
-              ))}
-            </ul>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       </div>
-
       <Footer />
     </div>
   );
