@@ -31,7 +31,7 @@ app.get("/users/:user_id/orders", orderController.getAllOrders);
 app.get("/users/:user_id/orders/:id", orderController.getOrderById);
 app.post("/users/:user_id/orders", orderController.createOrder);
 app.patch("/users/:user_id/orders/:id", orderController.updateOrder);
-app.delete("/users/:user_id/orders/:id", orderController.deleteOrder);
+app.delete("/orders/:id", orderController.deleteOrder);
 
 // Login route
 app.post("/login", loginController.login);

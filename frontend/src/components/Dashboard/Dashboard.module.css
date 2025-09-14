@@ -176,3 +176,9 @@ li:last-child {
   padding: 8px;
   text-align: left;
 }
+
+.actions-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

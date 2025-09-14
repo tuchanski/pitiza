@@ -72,10 +72,10 @@ async function getAllOrders(userId) {
   return result[0];
 }
 
-async function getOrderById(orderId, userId) {
+async function getOrderById(orderId) {
   const result = await client.query(
-    "SELECT * FROM `order` WHERE id_order = ? AND user_user_id = ?",
-    [orderId, userId]
+    "SELECT * FROM `order` WHERE id_order = ?",
+    [orderId]
   );
   return result[0][0] || null;
 }
@@ -89,8 +89,8 @@ async function createOrder(order, userId) {
   return result[0];
 }
 
-async function updateOrder(orderId, userId, newData) {
-  const order = await getOrderById(orderId, userId);
+async function updateOrder(orderId, newData) {
+  const order = await getOrderById(orderId);
   if (!order) return null;
   const values = [
     newData.customer_name || order.customer_name,
@@ -100,19 +100,16 @@ async function updateOrder(orderId, userId, newData) {
     userId,
   ];
   const result = await client.query(
-    "UPDATE `order` SET customer_name = ?, items = ?, total_price = ? WHERE id_order = ? AND user_user_id = ?",
+    "UPDATE `order` SET customer_name = ?, items = ?, total_price = ? WHERE id_order = ?",
     values
   );
   return result[0];
 }
 
-async function deleteOrder(orderId, userId) {
-  const order = await getOrderById(orderId, userId);
+async function deleteOrder(orderId) {
+  const order = await getOrderById(orderId);
   if (!order) return false;
-  await client.query(
-    "DELETE FROM `order` WHERE id_order = ? AND user_user_id = ?",
-    [orderId, userId]
-  );
+  await client.query("DELETE FROM `order` WHERE id_order = ?", [orderId]);
   return true;
 }
 

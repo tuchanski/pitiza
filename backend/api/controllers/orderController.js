@@ -58,10 +58,9 @@ export async function updateOrder(req, res) {
 }
 
 export async function deleteOrder(req, res) {
-  const userId = req.params.user_id;
   const orderId = req.params.id;
   try {
-    const result = await db.deleteOrder(orderId, userId);
+    const result = await db.deleteOrder(orderId);
     if (result) {
       res.status(200).json({ message: "Order deleted successfully" });
     } else {

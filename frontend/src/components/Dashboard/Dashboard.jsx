@@ -43,6 +43,22 @@ function Dashboard() {
       });
   }, []);
 
+  function handleDelete(id_order) {
+    axios
+      .delete(`http://localhost:3000/orders/${id_order}`, {
+        withCredentials: true,
+      })
+      .then(() => {
+        setOrders(orders.filter((order) => order.id_order !== id_order));
+      })
+      .then(() => {
+        alert("Order deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Error deleting order:", error);
+      });
+  }
+
   return (
     <div className={styles.dashboard}>
       <Navbar restaurantName={restaurant} />
@@ -79,8 +95,11 @@ function Dashboard() {
                     <td>{order.customer_name}</td>
                     <td>{order.items}</td>
                     <td>$ {order.total_price}</td>
-                    <td>
-                      <button className={styles["btn-delete"]}>
+                    <td className={styles["actions-cell"]}>
+                      <button
+                        className={styles["btn-delete"]}
+                        onClick={() => handleDelete(order.id_order)}
+                      >
                         <FaTrash size={22} />
                       </button>
                       <button className={styles["btn-update"]}>
