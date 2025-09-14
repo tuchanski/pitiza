@@ -62,4 +62,76 @@ async function deleteUser(id) {
   return true;
 }
 
-export default { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+// Order CRUD operations
+
+// Filtering by User
+async function getAllOrders(userId) {
+  const result = await client.query("SELECT * FROM `order` WHERE user_id = ?", [
+    userId,
+  ]);
+  return result[0];
+}
+
+// Filtering by User
+async function getOrderById(orderId, userId) {
+  const result = await client.query(
+    "SELECT * FROM `order` WHERE id = ? AND user_id = ?",
+    [orderId, userId]
+  );
+  return result[0][0] || null;
+}
+
+// Creating order for a specific User
+async function createOrder(order, userId) {
+  const values = [order.customer_name, order.items, order.total_price, userId];
+  const result = await client.query(
+    "INSERT INTO `order` (customer_name, items, total_price, user_id) VALUES (?, ?, ?, ?)",
+    values
+  );
+  return result[0];
+}
+
+async function updateOrder(orderId, userId, newData) {
+  const order = await getOrderById(orderId, userId);
+
+  if (!order) return null;
+
+  const values = [
+    newData.customer_name || order.customer_name,
+    newData.items || order.items,
+    newData.total_price || order.total_price,
+    orderId,
+    userId,
+  ];
+
+  const result = await client.query(
+    "UPDATE `order` SET customer_name = ?, items = ?, total_price = ? WHERE id = ? AND user_id = ?",
+    values
+  );
+  return result[0];
+}
+
+async function deleteOrder(orderId, userId) {
+  const order = await getOrderById(orderId, userId);
+
+  if (!order) return false;
+
+  const result = await client.query(
+    "DELETE FROM `order` WHERE id = ? AND user_id = ?",
+    [orderId, userId]
+  );
+  return true;
+}
+
+export default {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+  getAllOrders,
+  getOrderById,
+  createOrder,
+  updateOrder,
+  deleteOrder,
+};

@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import * as userController from "./controllers/userController.js";
+import * as orderController from "./controllers/orderController.js";
 
 const envFound = dotenv.config();
 const app = express();
@@ -14,6 +15,13 @@ app.post("/users", userController.createUser);
 app.patch("/users/:id", userController.updateUser);
 app.delete("/users/:id", userController.deleteUser);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+// Order routes
+app.get("/users/:user_id/orders", orderController.getAllOrders);
+app.get("/users/:user_id/orders/:id", orderController.getOrderById);
+app.post("/users/:user_id/orders", orderController.createOrder);
+app.patch("/users/:user_id/orders/:id", orderController.updateOrder);
+app.delete("/users/:user_id/orders/:id", orderController.deleteOrder);
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server is running on port ${process.env.PORT || 3000}`);
 });
