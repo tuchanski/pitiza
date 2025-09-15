@@ -9,53 +9,23 @@ Pitiza é uma aplicação web para gerenciamento de pedidos de pizza, composta p
 ## Estrutura do Projeto
 
 ```
-backend/
-  api/
-    db.js
-    index.js
-    package.json
-    controllers/
-      loginController.js
-      orderController.js
-      userController.js
-  db/
-    script.sql
-frontend/
-  eslint.config.js
-  index.html
-  package.json
-  vite.config.js
-  public/
-    vite.svg
-  src/
-    App.jsx
-    main.jsx
-    assets/
-      pitiza.svg
-      react.svg
-      showing-pizza.png
-      showing-pizza2.png
-    components/
-      Dashboard/
-        CreateOrderModal.jsx
-        Dashboard.jsx
-        Dashboard.module.css
-        DashboardHeader.jsx
-        OrderTable.jsx
-        SearchModal.jsx
-        UpdateModal.jsx
-        Footer/
-          Footer.jsx
-          Footer.module.css
-        Navbar/
-          Navbar.jsx
-          Navbar.module.css
-      Login/
-        Login.jsx
-        Login.module.css
-      Register/
-        Register.jsx
-        Register.module.css
+pitiza/
+├── backend/
+│   ├── api/
+│   │   ├── controllers/   # Lógica das rotas (login, usuário, pedido)
+│   │   ├── db.js          # Conexão com o banco de dados
+│   │   ├── index.js       # Servidor Express principal
+│   └── db/
+│       └── script.sql     # Script de criação do banco
+├── frontend/
+│   ├── src/
+│   │   ├── components/    # Componentes React (Dashboard, Login, Register)
+│   │   ├── assets/        # Imagens e ícones
+│   │   ├── App.jsx        # Componente principal
+│   │   └── main.jsx       # Ponto de entrada do app
+│   ├── public/            # Arquivos públicos
+│   └── package.json       # Dependências do frontend
+└── README.md
 ```
 
 ## Funcionalidades
@@ -118,4 +88,4 @@ frontend/
 
 - **Frontend:** React, Vite, CSS Modules
 - **Backend:** Node.js, Express
-- **Banco de Dados:** SQL
+- **Banco de Dados:** MySQL
