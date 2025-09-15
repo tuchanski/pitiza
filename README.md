@@ -1,6 +1,6 @@
 # Pitiza
 
-Pitiza é uma aplicação web para gerenciamento de pedidos de pizza, composta por um frontend em React (Vite) e um backend em Node.js (Express).
+Pitiza é uma aplicação web para gerenciamento de pedidos de um restaurante, composta por um frontend em React (Vite) e um backend em Node.js (Express).
 
 ## Demonstração
 
