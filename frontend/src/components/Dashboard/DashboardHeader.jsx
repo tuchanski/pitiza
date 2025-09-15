@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Dashboard.module.css";
 
-function DashboardHeader({ user, openCreateModal }) {
+function DashboardHeader({ user, openCreateModal, openSearchModal }) {
   return (
     <div className={styles["container-options"]}>
       <p>Welcome back, {user.name} 😊</p>
@@ -9,7 +9,9 @@ function DashboardHeader({ user, openCreateModal }) {
         <button className={styles["btn-create"]} onClick={openCreateModal}>
           Create Order
         </button>
-        <button className={styles["btn-search"]}>Search Order</button>
+        <button className={styles["btn-search"]} onClick={openSearchModal}>
+          Search Order
+        </button>
       </div>
     </div>
   );

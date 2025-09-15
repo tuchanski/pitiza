@@ -10,6 +10,7 @@ import CreateOrderModal from "./CreateOrderModal.jsx";
 import OrderTable from "./OrderTable.jsx";
 import DashboardHeader from "./DashboardHeader.jsx";
 import UpdateModal from "./UpdateModal.jsx";
+import SearchModal from "./SearchModal.jsx";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function Dashboard() {
   const [user, setUser] = useState(""); // Current User
   const [orders, setOrders] = useState([]); // All Orders
   const [restaurant, setRestaurant] = useState(""); // Restaurant Name
+  const [searchOrder, setSearchOrder] = useState({ id_order: "" }); // Search Order
 
   const [order, setOrder] = useState({
     customer_name: "",
@@ -26,6 +28,7 @@ function Dashboard() {
 
   const [auth, setAuth] = useState(false); // Authentication Status
   const [showModal, setShowModal] = useState(false); // Modal Visibility
+  const [showSearchModal, setShowSearchModal] = useState(false); // Create Modal Visibility
   const [showUpdateModal, setShowUpdateModal] = useState(false); // Update Modal Visibility
   const [editOrderId, setEditOrderId] = useState(null); // currently edited order id
 
@@ -83,6 +86,7 @@ function Dashboard() {
 
     setShowModal(false);
     setOrder({ customer_name: "", items: "", total_price: "" });
+    setSearchOrder(null);
     navigate(0);
   }
 
@@ -93,6 +97,7 @@ function Dashboard() {
       })
       .then(() => {
         setOrders(orders.filter((order) => order.id_order !== id_order));
+        setSearchOrder(null);
       })
       .then(() => {
         alert("Order deleted successfully");
@@ -134,12 +139,62 @@ function Dashboard() {
       setShowUpdateModal(false);
       setOrder({ customer_name: "", items: "", total_price: "" });
       setEditOrderId(null);
+      setSearchOrder(null);
       navigate(0);
     }
   }
 
+  async function handleSearchOrder(e) {
+    e.preventDefault();
+    console.log("handleSearchOrder called", order);
+
+    try {
+      const userId = await axios
+        .get("http://localhost:3000/me", { withCredentials: true })
+        .then((res) => res.data.id);
+
+      const res = await axios.get(
+        `http://localhost:3000/users/${userId}/orders/${order.id_order}`,
+        { withCredentials: true }
+      );
+
+      if (res && res.data) {
+        console.log("Order found:", res.data);
+        setSearchOrder(res.data);
+      } else {
+        console.log("No order found with that ID");
+        setSearchOrder(null);
+      }
+    } catch (error) {
+      console.error("Error searching for order:", error);
+      setSearchOrder(null);
+      alert("Order not found.");
+    }
+  }
+
+  function openSearchModal() {
+    setOrder({ id_order: "" });
+    setSearchOrder(null);
+    setShowSearchModal(true);
+  }
+
+  function closeSearchModal() {
+    setShowSearchModal(false);
+    setSearchOrder(null);
+  }
+
   return (
     <div className={styles.dashboard}>
+      <SearchModal
+        show={showSearchModal}
+        onSubmit={handleSearchOrder}
+        order={order}
+        setOrder={setOrder}
+        onCancel={closeSearchModal}
+        searchOrder={searchOrder}
+        setSearchOrder={setSearchOrder}
+      />
+
       <CreateOrderModal
         show={showModal}
         onSubmit={handleCreateOrder}
@@ -165,6 +220,7 @@ function Dashboard() {
             setEditOrderId(null);
             setShowModal(true);
           }}
+          openSearchModal={openSearchModal}
         />
 
         <div className={styles["container-orders"]}>
