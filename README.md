@@ -7,19 +7,19 @@ Pitiza é uma aplicação web para gerenciamento de pedidos de pizza, composta p
 [Assista ao vídeo demo](https://www.youtube.com/watch?v=Esd3CZ3J6OE)
 
 > Login Screen
-<img width="1913" height="935" alt="login" src="https://github.com/user-attachments/assets/53a73856-e10f-422e-90f0-9f4ef7541ab3" />
+> <img width="1913" height="935" alt="login" src="https://github.com/user-attachments/assets/53a73856-e10f-422e-90f0-9f4ef7541ab3" />
 
 > Dashboard Screen
-<img width="1917" height="943" alt="dashboard" src="https://github.com/user-attachments/assets/dc65d9ed-55e7-4cc6-a528-548e026158c7" />
+> <img width="1917" height="943" alt="dashboard" src="https://github.com/user-attachments/assets/dc65d9ed-55e7-4cc6-a528-548e026158c7" />
 
 > Create Screen
-<img width="1913" height="940" alt="create" src="https://github.com/user-attachments/assets/a982c8fc-37d8-4f23-ac80-2f852c92f9d1" />
+> <img width="1913" height="940" alt="create" src="https://github.com/user-attachments/assets/a982c8fc-37d8-4f23-ac80-2f852c92f9d1" />
 
 > Search Screen
-<img width="1915" height="940" alt="search" src="https://github.com/user-attachments/assets/4c0a9744-862e-40b6-b63f-03675f46d40b" />
+> <img width="1915" height="940" alt="search" src="https://github.com/user-attachments/assets/4c0a9744-862e-40b6-b63f-03675f46d40b" />
 
 > Update Screen
-<img width="1913" height="938" alt="update" src="https://github.com/user-attachments/assets/6a408462-5398-45bd-b881-a821e2e43170" />
+> <img width="1913" height="938" alt="update" src="https://github.com/user-attachments/assets/6a408462-5398-45bd-b881-a821e2e43170" />
 
 ## Estrutura do Projeto
 
@@ -96,8 +96,20 @@ pitiza/
 
 ## Banco de Dados
 
-- O script de criação do banco está em `backend/db/script.sql`.
-- Configure a conexão no arquivo `backend/api/db.js`.
+O banco de dados utilizado é **MySQL**.
+
+O script de criação do banco está em `backend/db/script.sql`.
+
+A configuração de acesso ao banco deve ser feita no arquivo `.env` na pasta `backend/`, seguindo o exemplo abaixo:
+
+```
+DB_HOST=localhost
+DB_USER=seu_usuario
+DB_PASSWORD=sua_senha
+DB_NAME=pitiza
+```
+
+Certifique-se de criar o banco e as tabelas executando o script SQL antes de iniciar o backend.
 
 ## Tecnologias Utilizadas
 
