@@ -52,3 +52,23 @@ export const createUser = async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 };
+
+export const deleteUserById = async (req, res) => {
+  const userId = req.params.id;
+  const sql = `DELETE FROM user WHERE id_user = ${userId}`;
+
+  try {
+    const result = await db.query(sql);
+
+    if (result) {
+      if (result[0].affectedRows !== 0) {
+        return res.status(201).json({ message: "User deleted successfully." });
+      }
+
+      return res.status(404).json({ error: "User not found." });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error." });
+  }
+};
