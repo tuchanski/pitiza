@@ -3,7 +3,7 @@ import db from "../db.js";
 export const getAllUsers = async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM user");
-    res.json(rows);
+    res.json({ users: rows });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error." });
@@ -13,13 +13,14 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const userId = req.params.id;
-    const [rows] = await db.query(
-      `SELECT * FROM user WHERE id_user = ${userId}`
-    );
+
+    const sql = "SELECT * FROM user WHERE id_user = ?";
+
+    const [rows] = await db.query(sql, [userId]);
     if (rows.length !== 0) {
-      res.json(rows);
+      res.json({ user: rows[0] });
     } else {
-      res.status(500).json({ error: "User not found." });
+      res.status(404).json({ error: "User not found." });
     }
   } catch (err) {
     console.log(err);
@@ -35,13 +36,22 @@ export const createUser = async (req, res) => {
     req.body.restaurant_name,
   ];
 
+  if (
+    req.body.username === undefined ||
+    req.body.name === undefined ||
+    req.body.password === undefined ||
+    req.body.restaurant_name === undefined
+  ) {
+    return res.status(400).json({ error: "All fields are required." });
+  }
+
   const sql = `INSERT INTO user (username, name, password, restaurant_name) VALUES (?, ?, ?, ?)`;
 
   try {
     const result = await db.query(sql, values);
 
     if (result) {
-      res.status(200).json({ message: "User created successfully " });
+      res.status(201).json({ message: "User created successfully " });
     }
   } catch (err) {
     if (err.code === "ER_DUP_ENTRY") {
@@ -55,20 +65,27 @@ export const createUser = async (req, res) => {
 
 export const deleteUserById = async (req, res) => {
   const userId = req.params.id;
-  const sql = `DELETE FROM user WHERE id_user = ${userId}`;
+  const sql = `DELETE FROM user WHERE id_user = ?`;
 
   try {
-    const result = await db.query(sql);
+    const result = await db.query(sql, [userId]);
 
     if (result) {
       if (result[0].affectedRows !== 0) {
-        return res.status(201).json({ message: "User deleted successfully." });
+        return res.status(200).json({ message: "User deleted successfully." });
       }
 
       return res.status(404).json({ error: "User not found." });
     }
   } catch (err) {
     console.log(err);
+
+    if (err.code === "ER_ROW_IS_REFERENCED_2") {
+      return res
+        .status(409)
+        .json({ error: "Cannot delete user with existing orders." });
+    }
+
     res.status(500).json({ error: "Internal server error." });
   }
 };
