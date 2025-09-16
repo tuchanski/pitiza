@@ -89,3 +89,51 @@ export const deleteUserById = async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 };
+
+export const updateUserById = async (req, res) => {
+  const userId = req.params.id;
+  let desiredUser = "";
+
+  const desiredUserSql = "SELECT * FROM user WHERE id_user = ?";
+
+  try {
+    const [result] = await db.query(desiredUserSql, userId);
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    desiredUser = result[0];
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error." });
+  }
+
+  const values = [
+    req.body.username || desiredUser.username,
+    req.body.name || desiredUser.name,
+    req.body.password || desiredUser.password,
+    req.body.restaurant_name || desiredUser.restaurant_name,
+    userId,
+  ];
+
+  const updateSql =
+    "UPDATE user SET username = ?, name = ?, password = ?, restaurant_name = ? WHERE id_user = ?";
+
+  try {
+    const result = await db.query(updateSql, values);
+
+    if (result) {
+      console.log(result);
+      res.status(200).json({ message: "User updated successfully." });
+    }
+  } catch (err) {
+    console.log(err);
+
+    if (err.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({ error: "Username already registered." });
+    }
+
+    res.status(500).json({ error: "Internal server error." });
+  }
+};
