@@ -3,28 +3,27 @@ import db from "../db.js";
 export const getAllUsers = async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM user");
-    res.json({ users: rows });
+    return res.status(200).json({ users: rows });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Internal server error." });
+    return res.status(500).json({ error: "Internal server error." });
   }
 };
 
 export const getUserById = async (req, res) => {
   try {
     const userId = req.params.id;
-
     const sql = "SELECT * FROM user WHERE id_user = ?";
-
     const [rows] = await db.query(sql, [userId]);
-    if (rows.length !== 0) {
-      res.json({ user: rows[0] });
-    } else {
-      res.status(404).json({ error: "User not found." });
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "User not found." });
     }
+
+    return res.status(200).json({ user: rows[0] });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Internal server error." });
+    return res.status(500).json({ error: "Internal server error." });
   }
 };
 
@@ -48,18 +47,15 @@ export const createUser = async (req, res) => {
   const sql = `INSERT INTO user (username, name, password, restaurant_name) VALUES (?, ?, ?, ?)`;
 
   try {
-    const result = await db.query(sql, values);
-
-    if (result) {
-      res.status(201).json({ message: "User created successfully " });
-    }
+    await db.query(sql, values);
+    return res.status(201).json({ message: "User created successfully." });
   } catch (err) {
     if (err.code === "ER_DUP_ENTRY") {
       return res.status(409).json({ error: "Username already registered." });
     }
 
     console.error(err);
-    res.status(500).json({ error: "Internal server error." });
+    return res.status(500).json({ error: "Internal server error." });
   }
 };
 
@@ -68,15 +64,13 @@ export const deleteUserById = async (req, res) => {
   const sql = `DELETE FROM user WHERE id_user = ?`;
 
   try {
-    const result = await db.query(sql, [userId]);
+    const [result] = await db.query(sql, [userId]);
 
-    if (result) {
-      if (result[0].affectedRows !== 0) {
-        return res.status(200).json({ message: "User deleted successfully." });
-      }
-
+    if (result.affectedRows === 0) {
       return res.status(404).json({ error: "User not found." });
     }
+
+    return res.status(200).json({ message: "User deleted successfully." });
   } catch (err) {
     console.log(err);
 
@@ -86,7 +80,7 @@ export const deleteUserById = async (req, res) => {
         .json({ error: "Cannot delete user with existing orders." });
     }
 
-    res.status(500).json({ error: "Internal server error." });
+    return res.status(500).json({ error: "Internal server error." });
   }
 };
 
@@ -106,7 +100,7 @@ export const updateUserById = async (req, res) => {
     desiredUser = result[0];
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Internal server error." });
+    return res.status(500).json({ error: "Internal server error." });
   }
 
   const values = [
@@ -121,12 +115,8 @@ export const updateUserById = async (req, res) => {
     "UPDATE user SET username = ?, name = ?, password = ?, restaurant_name = ? WHERE id_user = ?";
 
   try {
-    const result = await db.query(updateSql, values);
-
-    if (result) {
-      console.log(result);
-      res.status(200).json({ message: "User updated successfully." });
-    }
+    await db.query(updateSql, values);
+    return res.status(200).json({ message: "User updated successfully." });
   } catch (err) {
     console.log(err);
 
@@ -134,6 +124,6 @@ export const updateUserById = async (req, res) => {
       return res.status(409).json({ error: "Username already registered." });
     }
 
-    res.status(500).json({ error: "Internal server error." });
+    return res.status(500).json({ error: "Internal server error." });
   }
 };
