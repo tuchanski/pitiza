@@ -1,0 +1,65 @@
+.container-options {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container-options-buttons {
+  margin-right: 40px;
+}
+
+.container-options p {
+  font-size: 22px;
+  color: #333;
+  margin-left: 40px;
+}
+
+.btn-create {
+  all: unset;
+  background-color: #a63a50;
+  color: white;
+  padding: 20px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  margin-right: 20px;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  text-align: center;
+}
+.btn-create:hover {
+  background-color: #922d3c;
+}
+
+.btn-search {
+  all: unset;
+  padding: 20px 30px;
+  background-color: #a63a50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.btn-search:hover {
+  background-color: #922d3c;
+}
+
+.icon-search,
+.icon-create {
+  margin-right: 5px;
+  vertical-align: middle;
+  font-size: 20px;
+}

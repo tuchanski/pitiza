@@ -1,0 +1,80 @@
+.card-container {
+  background-color: rgb(255, 255, 255);
+  width: 300px;
+  height: 450px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.card-container img {
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+.card-container h2 {
+  font-size: 24px;
+  margin-top: 15px;
+  font-weight: 400;
+  margin-bottom: 0px;
+}
+
+.card-container-price {
+  font-size: 20px;
+  color: #a63a50;
+  font-weight: 500;
+  margin: 5px 0;
+}
+.card-container h3 {
+  font-size: 18px;
+  margin: 10px 0 5px 0;
+  font-weight: 400;
+}
+
+.card-container-customer {
+  font-weight: 400;
+  color: #555;
+}
+
+.card-container-description {
+  font-size: 16px;
+  margin: 10px 20px;
+  font-weight: 400;
+  color: #555;
+}
+
+.card-container-info {
+  font-weight: 400;
+  color: #555;
+}
+
+.action-btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-container button {
+  all: unset;
+  background-color: #a63a50;
+  color: #ebebeb;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+.card-container button:hover {
+  background-color: #8c2e3f;
+}
+
+.icon-edit,
+.icon-delete {
+  font-size: 20px;
+}

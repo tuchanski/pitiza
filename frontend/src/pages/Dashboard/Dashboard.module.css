@@ -1,0 +1,48 @@
+.container {
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  margin-top: 100px;
+  padding: 20px;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin: 0;
+}
+
+.card-item {
+  margin: 0;
+  
+}
+
+.dashboard-sub-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+@media screen and (max-width: 1500px) {
+  .cards-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+}
