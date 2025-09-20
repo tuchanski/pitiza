@@ -3,8 +3,26 @@ import styles from "./Dashboard.module.css";
 import Card from "../../components/Card/Card";
 import DashboardHeader from "../../components/Header/DashboardHeader";
 import Footer from "../../components/Footer/Footer";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Dashboard() {
+  const [currentUser, setCurrentUser] = useState("2"); // Teste
+  const [orderList, setOrderList] = useState([""]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3000/api/users/${currentUser}/orders`)
+      .then((response) => {
+        setOrderList(response.data.orders);
+        console.log(response.data.orders); // settando
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("Deu merda");
+      });
+  }, []);
+
   return (
     <div className={styles["dashboard"]}>
       <Navbar restaurantName="Teste" />
@@ -13,78 +31,19 @@ function Dashboard() {
           <DashboardHeader userName={"Notch"} />
 
           <div className={styles["cards-container"]}>
-            <div className="card-item">
-              <Card
-                name={"Fortnite"}
-                items={"Pizza"}
-                customerName={"Notch"}
-                info={"Really delicious Pizza"}
-                totalValue={29.99}
-              />
-            </div>
-            <div className={styles["card-item"]}>
-              <Card
-                name={"Fortnite"}
-                items={"Pizza"}
-                customerName={"Notch"}
-                info={"Really delicious Pizza"}
-                totalValue={29.99}
-              />
-            </div>
-            <div className={styles["card-item"]}>
-              <Card
-                name={"Fortnite"}
-                items={"Pizza"}
-                customerName={"Notch"}
-                info={"Really delicious Pizza"}
-                totalValue={29.99}
-              />
-            </div>
-            <div className={styles["card-item"]}>
-              <Card
-                name={"Fortnite"}
-                items={"Pizza"}
-                customerName={"Notch"}
-                info={"Really delicious Pizza"}
-                totalValue={29.99}
-              />
-            </div>
-            <div className={styles["card-item"]}>
-              <Card
-                name={"Fortnite"}
-                items={"Pizza"}
-                customerName={"Notch"}
-                info={"Really delicious Pizza"}
-                totalValue={29.99}
-              />
-            </div>
-            <div className={styles["card-item"]}>
-              <Card
-                name={"Fortnite"}
-                items={"Pizza"}
-                customerName={"Notch"}
-                info={"Really delicious Pizza"}
-                totalValue={29.99}
-              />
-            </div>
-            <div className={styles["card-item"]}>
-              <Card
-                name={"Fortnite"}
-                items={"Pizza"}
-                customerName={"Notch"}
-                info={"Really delicious Pizza"}
-                totalValue={29.99}
-              />
-            </div>
-            <div className={styles["card-item"]}>
-              <Card
-                name={"Fortnite"}
-                items={"Pizza"}
-                customerName={"Notch"}
-                info={"Really delicious Pizza"}
-                totalValue={29.99}
-              />
-            </div>
+            {orderList.map((item) => {
+              return (
+                <div className="card-item">
+                  <Card
+                    key={item.id_order}
+                    items={item.items}
+                    customerName={item.customer_name}
+                    info={item.id_order}
+                    totalValue={item.total_price}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

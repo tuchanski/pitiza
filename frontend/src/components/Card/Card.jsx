@@ -10,7 +10,9 @@ function Card(props) {
       <img src={pizzaImg} alt="" />
       <div className={styles["card-container-info"]}>
         <h2>{props.items}</h2> {/* Card Title */}
-        <p className={styles["card-container-price"]}>$ {props.totalValue}</p>
+        <p className={styles["card-container-price"]}>
+          Price: $ {props.totalValue}
+        </p>
         <h3>
           Customer:{" "}
           <span className={styles["card-container-customer"]}>
@@ -18,7 +20,7 @@ function Card(props) {
           </span>
         </h3>
         <p className={styles["card-container-description"]}>
-          Description:{" "}
+          ID:{" "}
           <span className={styles["card-container-info"]}>{props.info}</span>
         </p>
       </div>

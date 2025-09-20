@@ -3,8 +3,12 @@
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+html,
 body {
   margin: 0;
+}
+
+body {
   background-color: #ebebeb;
 }
 
@@ -13,4 +17,12 @@ h2 {
   margin-bottom: 30px;
   font-weight: 500;
   font-size: 20px;
+}
+
+footer {
+  flex: 1;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
