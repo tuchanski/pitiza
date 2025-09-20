@@ -46,3 +46,8 @@
   font-size: 10px;
   font-weight: normal;
 }
+
+.logout-icon {
+  font-size: 30px;
+  vertical-align: middle;
+}

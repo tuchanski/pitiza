@@ -9,12 +9,12 @@ function DashboardHeader(props) {
       <p>Welcome back, {props.userName} 😊</p>
       <div className={styles["container-options-buttons"]}>
         <button className={styles["btn-create"]}>
-          <IoMdAddCircleOutline className={styles["icon-create"]} /> Create
-          Order
+          <IoMdAddCircleOutline className={styles["icon-create"]} />
+          <span>Create Order</span>
         </button>
         <button className={styles["btn-search"]}>
           <IoIosSearch className={styles["icon-search"]} />
-          Search Order
+          <span>Search Order</span>
         </button>
       </div>
     </div>
