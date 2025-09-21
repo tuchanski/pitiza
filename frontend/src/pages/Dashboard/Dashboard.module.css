@@ -8,6 +8,11 @@
   min-height: 100vh;
 }
 
+.dashboard-container {
+  position: relative;
+  min-height: 100vh;
+}
+
 .cards-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -24,7 +29,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+}
+
+.cards-container {
+  margin-top: 50px;
+  margin-bottom: 120px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
 }
 
 @media screen and (max-width: 1500px) {

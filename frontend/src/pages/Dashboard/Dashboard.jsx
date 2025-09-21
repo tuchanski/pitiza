@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Dashboard() {
-  const [currentUser, setCurrentUser] = useState("2"); // Teste
+  const [currentUser, setCurrentUser] = useState("5"); // Teste
   const [orderList, setOrderList] = useState([""]);
 
   useEffect(() => {
@@ -46,8 +46,8 @@ function Dashboard() {
             })}
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }

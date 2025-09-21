@@ -18,11 +18,3 @@ h2 {
   font-weight: 500;
   font-size: 20px;
 }
-
-footer {
-  flex: 1;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
