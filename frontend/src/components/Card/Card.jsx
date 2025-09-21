@@ -30,7 +30,7 @@ function Card(props) {
         <button className={styles["btn-edit"]}>
           <TiPencil className={styles["icon-edit"]} />
         </button>
-        <button className={styles["btn-delete"]}>
+        <button className={styles["btn-delete"]} onClick={props.deleteFunc}>
           <MdDeleteForever className={styles["icon-delete"]} />
         </button>
       </div>
