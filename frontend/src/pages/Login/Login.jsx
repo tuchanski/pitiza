@@ -2,8 +2,41 @@ import React from "react";
 import styles from "./Login.module.css";
 import pitizaLogo from "../../assets/pitiza.svg";
 import showingPizza from "../../assets/showing-pizza.png";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function Login() {
+  const [values, setValues] = React.useState({
+    username: "",
+    password: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(values);
+
+    axios
+      .post("http://localhost:3000/api/login", values)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          toast.success("Login successful!");
+          navigate("/dashboard");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 401 || err.response.status === 404) {
+          toast.error(err.response.data.error);
+          return;
+        }
+        toast.error("An error occurred.");
+      });
+  };
+
+  const navigate = useNavigate();
+
   return (
     <div className={styles["container"]}>
       <div className={styles["login-container"]}>
@@ -42,7 +75,11 @@ function Login() {
               <p>Forgot password?</p>
             </a>
           </div>
-          <button className={styles["submit-button"]} type="submit">
+          <button
+            className={styles["submit-button"]}
+            type="submit"
+            onClick={handleSubmit}
+          >
             Sign In
           </button>
         </form>
