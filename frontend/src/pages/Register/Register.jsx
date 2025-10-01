@@ -2,8 +2,53 @@ import React from "react";
 import styles from "./Register.module.css";
 import showingPizza from "../../assets/showing-pizza2.png";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function Register() {
+  const [values, setValues] = React.useState({
+    username: "",
+    name: "",
+    password: "",
+    confirmPassword: "",
+    restaurantName: "",
+  });
+
+  const navigate = useNavigate();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log(values);
+
+    if (values.password !== values.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
+
+    axios
+      .post("http://localhost:3000/api/users", {
+        username: values.username,
+        name: values.name,
+        password: values.password,
+        restaurant_name: values.restaurantName,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 201) {
+          toast.success("User created successfully!");
+          navigate("/login");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 409) {
+          toast.error("Username already registered.");
+          return;
+        }
+        toast.error("An error occurred.");
+      });
+  }
+
   return (
     <div className={styles["container"]}>
       <img src={showingPizza} alt="" className={styles.showingPizza} />
@@ -90,7 +135,11 @@ function Register() {
               <p>Terms and Conditions</p>
             </a>
           </div>
-          <button className={styles["sign-up"]} type="submit">
+          <button
+            className={styles["sign-up"]}
+            type="submit"
+            onClick={handleSubmit}
+          >
             Sign Up
           </button>
         </form>
