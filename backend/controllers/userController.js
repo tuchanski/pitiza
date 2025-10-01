@@ -1,4 +1,7 @@
 import db from "../db.js";
+import bcrypt from "bcryptjs";
+
+const salt = process.env.SALT;
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -43,6 +46,9 @@ export const createUser = async (req, res) => {
   ) {
     return res.status(400).json({ error: "All fields are required." });
   }
+
+  const hashedPassword = await bcrypt.hash(values[2], parseInt(salt));
+  values[2] = hashedPassword;
 
   const sql = `INSERT INTO user (username, name, password, restaurant_name) VALUES (?, ?, ?, ?)`;
 
