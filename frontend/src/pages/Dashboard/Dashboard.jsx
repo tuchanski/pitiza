@@ -9,6 +9,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
+import Modal from "../../components/Modal/Modal";
+
 function Dashboard() {
   const navigate = useNavigate();
   const [userId, setUserId] = useState();
@@ -16,6 +18,9 @@ function Dashboard() {
   const [username, setUsername] = useState("");
   const [realName, setRealName] = useState("");
   const [orderList, setOrderList] = useState([]);
+
+  const [openCreateModal, setOpenCreateModal] = useState(false);
+  const [openSearchModal, setOpenSearchModal] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -75,10 +80,48 @@ function Dashboard() {
       .delete(`http://localhost:3000/api/orders/${orderId}`)
       .then(() => {
         toast.success("Order deleted successfully.");
-        setOrderList((prev) => prev.filter((o) => o.id_order !== orderId));
+        navigate(0);
       })
       .catch((err) => {
         toast.error("Error deleting order.");
+        console.log(err);
+      });
+  }
+
+  function handleCreateModal() {
+    setOpenCreateModal(true);
+  }
+
+  function handleSearchModal() {
+    setOpenSearchModal(true);
+  }
+
+  async function handleCreateOrder(event) {
+    event.preventDefault();
+    if (!userId) return;
+    console.log("Creating order for user ID:", userId);
+    const token = localStorage.getItem("token");
+    const customerName = document.getElementById("customer_name").value;
+    const items = document.getElementById("items").value;
+    const totalPrice = document.getElementById("total_price").value;
+    const newOrder = {
+      customer_name: customerName,
+      items: items,
+      total_price: totalPrice,
+      id_user: userId,
+    };
+    await axios
+      .post(`http://localhost:3000/api/users/${userId}/orders`, newOrder, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        toast.success("Order created successfully.");
+        console.log(response);
+        setOpenCreateModal(false);
+        navigate(0);
+      })
+      .catch((err) => {
+        toast.error("Error creating order.");
         console.log(err);
       });
   }
@@ -88,7 +131,11 @@ function Dashboard() {
       <Navbar restaurantName={restaurantName} />
       <div className={styles["dashboard-container"]}>
         <div className={styles["dashboard-sub-container"]}>
-          <DashboardHeader realName={realName} />
+          <DashboardHeader
+            realName={realName}
+            handleCreateModal={handleCreateModal}
+            handleSearchModal={handleSearchModal}
+          />
 
           {orderList.length === 0 ? (
             <div className={styles["no-orders-found"]}>
@@ -110,6 +157,50 @@ function Dashboard() {
             </div>
           )}
         </div>
+
+        <Modal
+          isOpen={openCreateModal}
+          setOpen={setOpenCreateModal}
+          title="Create New Order"
+        >
+          <form
+            className={styles["form-create-order"]}
+            onSubmit={handleCreateOrder}
+          >
+            <div className={styles["form-group"]}>
+              <label htmlFor="customer_name">Customer Name:</label>
+              <input type="text" id="customer_name" required />
+            </div>
+
+            <div className={styles["form-group"]}>
+              <label htmlFor="items">Items:</label>
+              <input type="text" id="items" required />
+            </div>
+
+            <div className={styles["form-group"]}>
+              <label htmlFor="total_price">Total Price:</label>
+              <input type="number" id="total_price" required />
+            </div>
+
+            <button type="submit" className={styles["btn-submit"]}>
+              Create
+            </button>
+          </form>
+        </Modal>
+
+        <Modal
+          isOpen={openSearchModal}
+          setOpen={setOpenSearchModal}
+          title="Search Order"
+        >
+          <form>
+            <input type="text" placeholder="Order name" />
+            <button className={styles["btn-submit"]} type="submit">
+              Search
+            </button>
+          </form>
+        </Modal>
+
         <Footer />
       </div>
     </div>

@@ -8,11 +8,17 @@ function DashboardHeader(props) {
     <div className={styles["container-options"]}>
       <p>Welcome back, {props.realName} 😊</p>
       <div className={styles["container-options-buttons"]}>
-        <button className={styles["btn-create"]}>
+        <button
+          className={styles["btn-create"]}
+          onClick={props.handleCreateModal}
+        >
           <IoMdAddCircleOutline className={styles["icon-create"]} />
           <span>Create Order</span>
         </button>
-        <button className={styles["btn-search"]}>
+        <button
+          className={styles["btn-search"]}
+          onClick={props.handleSearchModal}
+        >
           <IoIosSearch className={styles["icon-search"]} />
           <span>Search Order</span>
         </button>
