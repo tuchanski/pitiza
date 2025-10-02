@@ -11,8 +11,10 @@ import { jwtDecode } from "jwt-decode";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(); // Teste
+  const [userId, setUserId] = useState();
   const [restaurantName, setRestaurantName] = useState("");
+  const [username, setUsername] = useState("");
+  const [realName, setRealName] = useState("");
   const [orderList, setOrderList] = useState([]);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ function Dashboard() {
         return;
       }
 
-      setCurrentUser(decoded.id_user);
+      setUserId(decoded.id_user);
     } catch (err) {
       console.error("Token is not valid.");
       localStorage.removeItem("token");
@@ -41,20 +43,23 @@ function Dashboard() {
   }, [navigate]);
 
   useEffect(() => {
-    if (!currentUser) return;
+    if (!userId) return;
 
     const token = localStorage.getItem("token");
 
     axios
-      .get(`http://localhost:3000/api/users/${currentUser}`, {
+      .get(`http://localhost:3000/api/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
+        console.log(response.data.user);
         setRestaurantName(response.data.user.restaurant_name);
+        setUsername(response.data.user.username);
+        setRealName(response.data.user.name);
       });
 
     axios
-      .get(`http://localhost:3000/api/users/${currentUser}/orders`, {
+      .get(`http://localhost:3000/api/users/${userId}/orders`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -63,7 +68,7 @@ function Dashboard() {
       .catch((err) => {
         console.error("Erro ao buscar pedidos:", err);
       });
-  }, [currentUser]);
+  }, [userId]);
 
   async function handleDeleteOrder(orderId) {
     await axios
@@ -83,7 +88,7 @@ function Dashboard() {
       <Navbar restaurantName={restaurantName} />
       <div className={styles["dashboard-container"]}>
         <div className={styles["dashboard-sub-container"]}>
-          <DashboardHeader userName={"Notch"} />
+          <DashboardHeader realName={realName} />
 
           {orderList.length === 0 ? (
             <div className={styles["no-orders-found"]}>

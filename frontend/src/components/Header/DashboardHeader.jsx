@@ -6,7 +6,7 @@ import { IoIosSearch } from "react-icons/io";
 function DashboardHeader(props) {
   return (
     <div className={styles["container-options"]}>
-      <p>Welcome back, {props.userName} 😊</p>
+      <p>Welcome back, {props.realName} 😊</p>
       <div className={styles["container-options-buttons"]}>
         <button className={styles["btn-create"]}>
           <IoMdAddCircleOutline className={styles["icon-create"]} />
