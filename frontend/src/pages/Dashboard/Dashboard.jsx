@@ -7,23 +7,63 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState("5"); // Teste
+  const [currentUser, setCurrentUser] = useState(); // Teste
+  const [restaurantName, setRestaurantName] = useState("");
   const [orderList, setOrderList] = useState([]);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const decoded = jwtDecode(token);
+
+      if (decoded.exp && Date.now() >= decoded.exp * 1000) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        return;
+      }
+
+      setCurrentUser(decoded.id_user);
+    } catch (err) {
+      console.error("Token is not valid.");
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const token = localStorage.getItem("token");
+
     axios
-      .get(`http://localhost:3000/api/users/${currentUser}/orders`)
+      .get(`http://localhost:3000/api/users/${currentUser}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setRestaurantName(response.data.user.restaurant_name);
+      });
+
+    axios
+      .get(`http://localhost:3000/api/users/${currentUser}/orders`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         setOrderList(response.data.orders);
       })
       .catch((err) => {
-        console.log(err);
-        console.log("Deu merda");
+        console.error("Erro ao buscar pedidos:", err);
       });
-  }, []);
+  }, [currentUser]);
 
   async function handleDeleteOrder(orderId) {
     await axios
@@ -40,7 +80,7 @@ function Dashboard() {
 
   return (
     <div className={styles["dashboard"]}>
-      <Navbar restaurantName="Teste" />
+      <Navbar restaurantName={restaurantName} />
       <div className={styles["dashboard-container"]}>
         <div className={styles["dashboard-sub-container"]}>
           <DashboardHeader userName={"Notch"} />

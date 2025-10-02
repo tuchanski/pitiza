@@ -4,7 +4,6 @@ import viteLogo from "/vite.svg";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login.jsx";
 import Register from "./pages/Register/Register.jsx";
-import "./App.css";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 

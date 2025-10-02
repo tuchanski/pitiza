@@ -12,7 +12,7 @@ function Login() {
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(values);
 
@@ -22,6 +22,13 @@ function Login() {
         console.log(res);
         if (res.status === 200) {
           toast.success("Login successful!");
+
+          const token = res.data.token;
+          const user = res.data.user;
+
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", user);
+
           navigate("/dashboard");
         }
       })

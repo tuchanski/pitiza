@@ -8,12 +8,17 @@ function Navbar(props) {
 
   const restaurant = { name: props.restaurantName };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <div className={styles.navbar}>
       <h2>
         {restaurant.name} <span id={styles.powered}>Pitiza™</span>
       </h2>
-      <button id={styles["log-out"]}>
+      <button id={styles["log-out"]} onClick={handleLogout}>
         <FiLogOut className={styles["logout-icon"]} />
       </button>
     </div>
