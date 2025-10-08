@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Login.module.css";
 import pitizaLogo from "../../assets/pitiza.svg";
 import showingPizza from "../../assets/showing-pizza.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -91,9 +91,9 @@ function Login() {
           </button>
         </form>
         <div className={styles["no-account"]}>
-          <a href="">
+          <Link to="/register">
             <p>I don't have an account</p>
-          </a>
+          </Link>
         </div>
       </div>
       <img src={showingPizza} alt="" className={styles.showingPizza} />
