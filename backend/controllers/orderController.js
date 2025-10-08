@@ -19,6 +19,23 @@ export const getAllOrdersByUserId = async (req, res) => {
   }
 };
 
+export const getOrderByUserIdAndOrderIdFunc = async (req, res) => {
+  const orderId = req.params.id_order;
+  const userId = req.params.id_user;
+
+  const values = [orderId, userId];
+
+  const sql = "SELECT * FROM pitiza.order WHERE id_order = ? AND id_user = ?";
+
+  try {
+    const [result] = await db.query(sql, values);
+    console.log(result[0]);
+    return res.status(200).json({ order: result[0] });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const getOrderById = async (req, res) => {
   const orderId = req.params.id;
 

@@ -130,6 +130,25 @@ function Dashboard() {
       });
   }
 
+  async function handleSearchOrder(event) {
+    event.preventDefault();
+    if (!userId) return;
+    const orderId = document.getElementById("order_id").value;
+
+    const token = localStorage.getItem("token");
+
+    await axios
+      .get(`http://localhost:3000/api/users/${userId}/orders/${orderId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <div className={styles["dashboard"]}>
       <Navbar restaurantName={restaurantName} />
@@ -177,7 +196,7 @@ function Dashboard() {
             </div>
 
             <div className={styles["form-group"]}>
-              <label htmlFor="items">Items:</label>
+              <label htmlFor="items">Item:</label>
               <select name="items" id="items">
                 <option value="pepperoni">Pepperoni Pizza</option>
                 <option value="strogonoff">Strogonoff Pizza</option>
@@ -205,8 +224,8 @@ function Dashboard() {
           setOpen={setOpenSearchModal}
           title="Search Order"
         >
-          <form>
-            <input type="text" placeholder="Order name" />
+          <form onSubmit={handleSearchOrder}>
+            <input type="text" placeholder="Order ID" id="order_id" />
             <button className={styles["btn-submit"]} type="submit">
               Search
             </button>
