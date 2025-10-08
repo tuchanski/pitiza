@@ -102,14 +102,18 @@ function Dashboard() {
     console.log("Creating order for user ID:", userId);
     const token = localStorage.getItem("token");
     const customerName = document.getElementById("customer_name").value;
-    const items = document.getElementById("items").value;
+    const selectElement = document.getElementById("items");
+    const selectedText =
+      selectElement.options[selectElement.selectedIndex].text;
+
     const totalPrice = document.getElementById("total_price").value;
     const newOrder = {
       customer_name: customerName,
-      items: items,
+      items: selectedText,
       total_price: totalPrice,
       id_user: userId,
     };
+
     await axios
       .post(`http://localhost:3000/api/users/${userId}/orders`, newOrder, {
         headers: { Authorization: `Bearer ${token}` },
@@ -174,7 +178,15 @@ function Dashboard() {
 
             <div className={styles["form-group"]}>
               <label htmlFor="items">Items:</label>
-              <input type="text" id="items" required />
+              <select name="items" id="items">
+                <option value="pepperoni">Pepperoni Pizza</option>
+                <option value="strogonoff">Strogonoff Pizza</option>
+                <option value="calabresa">Calabresa Pizza</option>
+                <option value="4cheese">4-Cheese Pizza</option>
+                <option value="chicken">Chicken Pizza</option>
+                <option value="nutella">Nutella Pizza</option>
+                <option value="strawberry">Strawberry of Love Pizza</option>
+              </select>
             </div>
 
             <div className={styles["form-group"]}>

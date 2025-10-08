@@ -45,3 +45,9 @@
   text-align: center;
   font-size: 18px;
 }
+
+.modalContent h2 {
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 25px;
+}
