@@ -27,7 +27,7 @@ function Card(props) {
         </p>
       </div>
       <div className={styles["action-btns"]}>
-        <button className={styles["btn-edit"]}>
+        <button className={styles["btn-edit"]} onClick={props.editFunc}>
           <TiPencil className={styles["icon-edit"]} />
         </button>
         <button className={styles["btn-delete"]} onClick={props.deleteFunc}>

@@ -19,9 +19,12 @@ function Dashboard() {
   const [realName, setRealName] = useState("");
   const [orderList, setOrderList] = useState([]);
   const [searchOrder, setSearchOrder] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [updateOrder, setUpdateOrder] = useState({});
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -94,7 +97,62 @@ function Dashboard() {
   }
 
   function handleSearchModal() {
+    setSearchOrder(null);
+    setHasSearched(false);
     setOpenSearchModal(true);
+  }
+
+  function handleUpdateModal(order) {
+    setUpdateOrder(order);
+    setOpenUpdateModal(true);
+  }
+
+  async function handleUpdateOrder(event) {
+    event.preventDefault();
+    if (!userId) return;
+    console.log("Updating order for user ID:", userId);
+    const token = localStorage.getItem("token");
+
+    // Build updated payload from controlled state
+    const updatedOrder = {
+      customer_name: updateOrder.customer_name,
+      items: updateOrder.items,
+      total_price: updateOrder.total_price,
+      id_user: userId,
+    };
+
+    console.log("Updating order ID:", updateOrder.id_order);
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/api/users/${userId}/orders/${updateOrder.id_order}`,
+        updatedOrder,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      // Update local list without reloading
+      setOrderList((prev) =>
+        prev.map((o) =>
+          o.id_order === updateOrder.id_order
+            ? {
+                ...o,
+                customer_name: updatedOrder.customer_name,
+                items: updatedOrder.items,
+                total_price: updatedOrder.total_price,
+              }
+            : o
+        )
+      );
+
+      toast.success("Order updated successfully.");
+      console.log(response);
+      setOpenUpdateModal(false);
+    } catch (err) {
+      toast.error("Error updating order.");
+      console.log(err);
+    }
   }
 
   async function handleCreateOrder(event) {
@@ -146,9 +204,12 @@ function Dashboard() {
       .then((response) => {
         console.log(response.data.order);
         setSearchOrder(response.data.order);
+        setHasSearched(true);
       })
       .catch((err) => {
         console.log(err);
+        // mark that a search was attempted even if it errored
+        setHasSearched(true);
       });
   }
 
@@ -177,6 +238,7 @@ function Dashboard() {
                     info={item.id_order}
                     totalValue={item.total_price}
                     deleteFunc={() => handleDeleteOrder(item.id_order)}
+                    editFunc={() => handleUpdateModal(item)}
                   />
                 </div>
               ))}
@@ -227,6 +289,7 @@ function Dashboard() {
           setOpen={setOpenSearchModal}
           title="Search Order"
           setSearchOrder={setSearchOrder}
+          setHasSearched={setHasSearched}
         >
           <div id="search-results" className={styles["search-results"]}>
             {searchOrder ? (
@@ -244,9 +307,9 @@ function Dashboard() {
                   <strong>Total:</strong> $ {searchOrder.total_price}
                 </p>
               </div>
-            ) : (
+            ) : hasSearched ? (
               <p>Order not found.</p>
-            )}
+            ) : null}
           </div>
 
           <form
@@ -257,6 +320,76 @@ function Dashboard() {
             <input type="text" placeholder="Order ID" id="order_id" />
             <button className={styles["btn-submit"]} type="submit">
               Search
+            </button>
+          </form>
+        </Modal>
+
+        <Modal
+          isOpen={openUpdateModal}
+          setOpen={setOpenUpdateModal}
+          title="Update Order"
+        >
+          <form
+            className={styles["form-create-order"]}
+            onSubmit={handleUpdateOrder}
+          >
+            <div className={styles["form-group"]}>
+              <label htmlFor="customer_name_upd">Customer Name:</label>
+              <input
+                type="text"
+                id="customer_name_upd"
+                required
+                value={updateOrder.customer_name || ""}
+                onChange={(e) =>
+                  setUpdateOrder((prev) => ({
+                    ...prev,
+                    customer_name: e.target.value,
+                  }))
+                }
+              />
+            </div>
+
+            <div className={styles["form-group"]}>
+              <label htmlFor="items_upd">Item:</label>
+              <select
+                name="items_upd"
+                id="items_upd"
+                value={updateOrder.items || "pepperoni"}
+                onChange={(e) =>
+                  setUpdateOrder((prev) => ({
+                    ...prev,
+                    items: e.target.options[e.target.selectedIndex].text,
+                  }))
+                }
+              >
+                <option value="pepperoni">Pepperoni Pizza</option>
+                <option value="strogonoff">Strogonoff Pizza</option>
+                <option value="calabresa">Calabresa Pizza</option>
+                <option value="4cheese">4-Cheese Pizza</option>
+                <option value="chicken">Chicken Pizza</option>
+                <option value="nutella">Nutella Pizza</option>
+                <option value="strawberry">Strawberry of Love Pizza</option>
+              </select>
+            </div>
+
+            <div className={styles["form-group"]}>
+              <label htmlFor="total_price_upd">Total Price:</label>
+              <input
+                type="number"
+                id="total_price_upd"
+                required
+                value={updateOrder.total_price || ""}
+                onChange={(e) =>
+                  setUpdateOrder((prev) => ({
+                    ...prev,
+                    total_price: e.target.value,
+                  }))
+                }
+              />
+            </div>
+
+            <button type="submit" className={styles["btn-submit"]}>
+              Update
             </button>
           </form>
         </Modal>

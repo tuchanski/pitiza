@@ -123,10 +123,11 @@ export const updateOrderById = async (req, res) => {
     items || orderToBeUpdated.items,
     total_price || orderToBeUpdated.total_price,
     userId,
+    orderId,
   ];
 
   const sql =
-    "UPDATE pitiza.order SET customer_name = ?, items = ?, total_price = ? WHERE id_user = ?";
+    "UPDATE pitiza.order SET customer_name = ?, items = ?, total_price = ? WHERE id_user = ? AND id_order = ?";
 
   try {
     await db.query(sql, values);
