@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Modal.module.css";
 
-function Modal({ isOpen, setOpen, title, children }) {
+function Modal({ isOpen, setOpen, title, children, setSearchOrder }) {
   if (!isOpen) return null;
 
   return (
@@ -9,7 +9,13 @@ function Modal({ isOpen, setOpen, title, children }) {
       <div className={styles.modalContent}>
         {title && <h2>{title}</h2>}
         <div className={styles.modalBody}>{children}</div>
-        <button className={styles["btn-close"]} onClick={() => setOpen(false)}>
+        <button
+          className={styles["btn-close"]}
+          onClick={() => {
+            setOpen(false);
+            setSearchOrder(null);
+          }}
+        >
           Close
         </button>
       </div>

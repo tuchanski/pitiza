@@ -18,6 +18,7 @@ function Dashboard() {
   const [username, setUsername] = useState("");
   const [realName, setRealName] = useState("");
   const [orderList, setOrderList] = useState([]);
+  const [searchOrder, setSearchOrder] = useState(null);
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openSearchModal, setOpenSearchModal] = useState(false);
@@ -130,6 +131,7 @@ function Dashboard() {
       });
   }
 
+  // ("/users/:id_user/orders/:id_order"
   async function handleSearchOrder(event) {
     event.preventDefault();
     if (!userId) return;
@@ -142,7 +144,8 @@ function Dashboard() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log(response);
+        console.log(response.data.order);
+        setSearchOrder(response.data.order);
       })
       .catch((err) => {
         console.log(err);
@@ -223,8 +226,34 @@ function Dashboard() {
           isOpen={openSearchModal}
           setOpen={setOpenSearchModal}
           title="Search Order"
+          setSearchOrder={setSearchOrder}
         >
-          <form onSubmit={handleSearchOrder}>
+          <div id="search-results" className={styles["search-results"]}>
+            {searchOrder ? (
+              <div id="order-details" className={styles["order-details"]}>
+                <p>
+                  <strong>ID:</strong> {searchOrder.id_order}
+                </p>
+                <p>
+                  <strong>Customer:</strong> {searchOrder.customer_name}
+                </p>
+                <p>
+                  <strong>Item:</strong> {searchOrder.items}
+                </p>
+                <p>
+                  <strong>Total:</strong> $ {searchOrder.total_price}
+                </p>
+              </div>
+            ) : (
+              <p>Order not found.</p>
+            )}
+          </div>
+
+          <form
+            id="search-order-form"
+            className={styles["search-order-form"]}
+            onSubmit={handleSearchOrder}
+          >
             <input type="text" placeholder="Order ID" id="order_id" />
             <button className={styles["btn-submit"]} type="submit">
               Search
