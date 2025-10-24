@@ -113,7 +113,6 @@ function Dashboard() {
     console.log("Updating order for user ID:", userId);
     const token = localStorage.getItem("token");
 
-    // Build updated payload from controlled state
     const updatedOrder = {
       customer_name: updateOrder.customer_name,
       items: updateOrder.items,
@@ -132,7 +131,6 @@ function Dashboard() {
         }
       );
 
-      // Update local list without reloading
       setOrderList((prev) =>
         prev.map((o) =>
           o.id_order === updateOrder.id_order
@@ -189,7 +187,6 @@ function Dashboard() {
       });
   }
 
-  // ("/users/:id_user/orders/:id_order"
   async function handleSearchOrder(event) {
     event.preventDefault();
     if (!userId) return;
@@ -208,7 +205,6 @@ function Dashboard() {
       })
       .catch((err) => {
         console.log(err);
-        // mark that a search was attempted even if it errored
         setHasSearched(true);
       });
   }
@@ -275,7 +271,13 @@ function Dashboard() {
 
             <div className={styles["form-group"]}>
               <label htmlFor="total_price">Total Price:</label>
-              <input type="number" id="total_price" required />
+              <input
+                type="number"
+                id="total_price"
+                required
+                step="0.01"
+                min="0"
+              />
             </div>
 
             <button type="submit" className={styles["btn-submit"]}>
@@ -378,6 +380,8 @@ function Dashboard() {
                 type="number"
                 id="total_price_upd"
                 required
+                step="0.01"
+                min="0"
                 value={updateOrder.total_price || ""}
                 onChange={(e) =>
                   setUpdateOrder((prev) => ({

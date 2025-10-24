@@ -4,17 +4,17 @@ A small order management system for pizzerias, built with a **Node.js/Express + 
 
 ## Overview
 
-- **Backend:** Node.js + Express  
-- **Frontend:** React + Vite  
+- **Backend:** Node.js + Express
+- **Frontend:** React + Vite
 - **Authentication:** JWT (token stored in `localStorage` on the frontend)
 
 The app allows you to create, list, search, update, and delete orders linked to users/restaurants.
 
 ## Prerequisites
 
-- Node.js (>=16)  
-- npm or yarn  
-- MySQL  
+- Node.js (>=16)
+- npm or yarn
+- MySQL
 
 ## Repository Structure (summary)
 
@@ -41,21 +41,27 @@ pitiza-remake/
 ## Screenshots
 
 ### 🟢 Login Screen
+
 <img width="1470" height="956" alt="Login" src="https://github.com/user-attachments/assets/4480879f-d479-4cfc-a86d-34d4b3f01da1" />
 
 ### 🟢 Register Screen
+
 <img width="1470" height="956" alt="Register" src="https://github.com/user-attachments/assets/4840d05d-4ad5-486f-bfa6-78d7a5f68ed6" />
 
 ### 🟢 Dashboard Screen
+
 <img width="1470" height="956" alt="Dashboard" src="https://github.com/user-attachments/assets/22c1437d-0156-4bb4-9c14-2112cc6e9f49" />
 
 ### 🟢 Create Order Screen
+
 <img width="1470" height="956" alt="Create Order" src="https://github.com/user-attachments/assets/31fbd66a-825d-4b01-837c-365406c3ae1a" />
 
 ### 🟢 Search Order Screen
+
 <img width="1470" height="956" alt="Search Order" src="https://github.com/user-attachments/assets/9e304b78-d6fb-4e05-82db-802c425fcda1" />
 
 ### 🟢 Update Screen
+
 <img width="1470" height="956" alt="Update Order" src="https://github.com/user-attachments/assets/cfbf1418-1bde-440a-a07d-0c290360c159" />
 
 ## Database
@@ -114,7 +120,7 @@ npm install
 npm start
 ```
 
-- The `start` script in `backend/package.json` runs `nodemon index.js` for development.  
+- The `start` script in `backend/package.json` runs `nodemon index.js` for development.
 - Default server: **http://localhost:3000**
 
 ### 2. Frontend
@@ -133,22 +139,22 @@ npm run dev
 
 ### 👤 Users
 
-- `GET /api/users/:id` — Get user data  
-- `POST /api/users` — Create user (register)  
-- `PATCH /api/users/:id` — Update user  
-- `DELETE /api/users/:id` — Delete user  
+- `GET /api/users/:id` — Get user data
+- `POST /api/users` — Create user (register)
+- `PATCH /api/users/:id` — Update user
+- `DELETE /api/users/:id` — Delete user
 
 ### 🍕 Orders
 
-- `GET /api/users/:id_user/orders` — List all orders for a user  
-- `GET /api/users/:id_user/orders/:id_order` — Get a specific order  
-- `POST /api/users/:id_user/orders` — Create an order for the user  
-- `PATCH /api/users/:id_user/orders/:id_order` — Update an existing order  
-- `DELETE /api/orders/:id` — Delete an order by ID  
+- `GET /api/users/:id_user/orders` — List all orders for a user
+- `GET /api/users/:id_user/orders/:id_order` — Get a specific order
+- `POST /api/users/:id_user/orders` — Create an order for the user
+- `PATCH /api/users/:id_user/orders/:id_order` — Update an existing order
+- `DELETE /api/orders/:id` — Delete an order by ID
 
 ### 🔐 Authentication
 
-- `POST /api/login` — Log in and receive a JWT token  
+- `POST /api/login` — Log in and receive a JWT token
 
 ## Author
 
